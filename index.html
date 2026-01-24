@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NileX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050509;
+            --card-bg: #16161d;
+            --border-color: #2a2a35;
+            --primary-blue: #0a66c2;
+            --primary-blue-hover: #004182;
+            --light-blue: #70b5f9;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--darker-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            color: var(--primary-blue);
+        }
+
+        .logo-image {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Button Styles - LinkedIn Inspired */
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-signin {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-signin:hover {
+            background-color: rgba(10, 102, 194, 0.1);
+            border-color: var(--primary-blue-hover);
+            color: var(--light-blue);
+            box-shadow: 0 0 12px rgba(10, 102, 194, 0.3);
+        }
+
+        .btn-signup {
+            background-color: var(--primary-blue);
+            color: white;
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-signup:hover {
+            background-color: var(--primary-blue-hover);
+            border-color: var(--primary-blue-hover);
+            box-shadow: 0 0 12px rgba(10, 102, 194, 0.4);
+        }
+
+        /* Background Image Hero Section */
+        .image-background-section {
+            position: relative;
+            height: 85vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.themuse.com/advice/10-free-classes-to-learn-to-code-if-you-have-absolutely-no-idea-where-to-start');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(10, 10, 15, 0.85), rgba(5, 5, 9, 0.7));
+            z-index: 2;
+        }
+
+        .image-content {
+            position: relative;
+            z-index: 3;
+            max-width: 700px;
+            padding: 40px;
+            background-color: rgba(22, 22, 29, 0.7);
+            border-radius: 16px;
+            border-left: 5px solid var(--primary-blue);
+            backdrop-filter: blur(10px);
+            margin-left: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .image-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .image-content ul {
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+
+        .image-content ul li {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .image-content ul li:before {
+            content: "•";
+            color: var(--accent);
+            font-size: 1.8rem;
+            position: absolute;
+            left: -20px;
+            top: -5px;
+        }
+
+        .image-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Grid Section */
+        .grid-section {
+            padding: 40px 0 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .grid-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent));
+            color: white;
+        }
+
+        .grid-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .grid-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            animation: modalAppear 0.4s ease;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        .modal h2 {
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--darker-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .modal-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0 30px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-blue);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .image-content {
+                margin-left: 20px;
+                margin-right: 20px;
+                padding: 30px;
+            }
+            
+            .image-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .image-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .image-background-section {
+                height: 70vh;
+                min-height: 500px;
+            }
+            
+            .image-content {
+                margin-left: 15px;
+                margin-right: 15px;
+                padding: 25px;
+            }
+            
+            .image-content h1 {
+                font-size: 2.3rem;
+            }
+            
+            .image-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .image-content ul li {
+                font-size: 1.1rem;
+            }
+            
+            .image-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 30px 25px;
+            }
+            
+            .image-background-section {
+                height: 65vh;
+                min-height: 450px;
+            }
+            
+            .image-content {
+                padding: 20px;
+            }
+            
+            .image-content h1 {
+                font-size: 1.9rem;
+            }
+            
+            .image-content h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo and Auth Buttons -->
+    <header>
+        <div class="container header-content">
+                    <div class="logo">
+                        <img src="Gemini_Generated_Image_vtdt0gvtdt0gvtdt.png" alt="NileX logo" class="logo-image">
+                        <span>NileX</span>
+                    </div>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-signin" id="signinBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+                <a href="#" class="btn btn-signup" id="signupBtn">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Background Image Section -->
+    <section class="image-background-section">
+        <div class="background-image"></div>
+        <div class="background-overlay"></div>
+        <div class="container">
+            <div class="image-content">
+                <h1>NileX</h1>
+                <ul>
+                    <li>1. To found a new version computer software.</li>
+                    <li>2. To learn a new computer coding.</li>
+                </ul>
+                <div class="image-buttons">
+                    <a href="#" class="btn btn-signup" id="imageSignupBtn">
+                        <i class="fas fa-user-plus"></i> Join Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Connect, Collaborate & Grow</h1>
+            <p>Join a professional network that empowers you to build meaningful connections, discover opportunities, and advance your career in a secure, dark-theme environment.</p>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-signin" id="heroSigninBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </a>
+                <a href="#" class="btn btn-signup" id="heroSignupBtn">
+                    <i class="fas fa-user-plus"></i> Sign Up Free
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid Section -->
+    <section class="grid-section" id="whySection">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <div class="grid-container">
+                <div class="grid-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-terminal"></i>
+                    </div>
+                    <h3>Nile-Shell</h3>
+                    <a href="https://github.com/delux3r-k/Nile-Shell.git" class="btn btn-signin" style="padding: 8px 16px; font-size: 14px;">Open Source</a>
+                </div>
+                <div class="grid-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3>Nile AI</h3>
+                    <a href="https://github.com/delux3r-k/Nilex-AI.git" class="btn btn-signin" style="padding: 8px 16px; font-size: 14px;">Open Source</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign In Modal -->
+    <div class="modal" id="signinModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSignin">&times;</span>
+            <h2><i class="fas fa-sign-in-alt"></i> Sign In to NileX</h2>
+            <form id="signinForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-signup modal-btn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+                <div class="form-footer">
+                <p>Don't have an account? <a href="#" id="switchToSignup">Sign Up</a></p>
+                <p><a href="#" id="forgotPasswordLink">Forgot password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSignup">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Join Nile</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="newEmail">Email Address</label>
+                    <input type="email" id="newEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Create Password</label>
+                    <input type="password" id="newPassword" placeholder="Create a strong password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn btn-signup modal-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" id="switchToSignin">Sign In</a></p>
+                <p>By joining, you agree to our <a href="#">Terms & Conditions</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+                <div class="footer-brand" style="display:flex;align-items:center;gap:12px;">
+                    <a href="index.html" style="text-decoration:none;color:var(--text-primary);font-weight:700;font-size:18px;">NileX</a>
+                    <span style="color:var(--text-secondary);font-size:14px;">&mdash; Connect, Collaborate & Grow</span>
+                </div>
+
+                <div class="footer-legal" style="display:flex;align-items:center;gap:18px;">
+                    <a href="privacy.html" style="color:var(--text-secondary);text-decoration:none;">Privacy Policy</a>
+                    <a href="cookie.html" style="color:var(--text-secondary);text-decoration:none;">Cookie Policy</a>
+                </div>
+            </div>
+
+            <div class="copyright" style="margin-top:18px;text-align:center;color:var(--text-secondary);font-size:14px;">
+                <p>&copy; 2025 NileX. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ef4444;"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // LocalStorage-based demo auth and modal handling
+        (function(){
+            // Admin credentials (demo)
+            const ADMIN_EMAIL = 'admin@nilex.local';
+            const ADMIN_PASSWORD = 'NileAdmin123!';
+
+            // Helpers for storage
+            function getUsers(){
+                try{return JSON.parse(localStorage.getItem('nile_users')||'[]');}catch(e){return[]}
+            }
+            function saveUsers(users){ localStorage.setItem('nile_users', JSON.stringify(users)); }
+            function getCurrentUser(){
+                try{return JSON.parse(localStorage.getItem('nile_current_user')||'null');}catch(e){return null}
+            }
+            function setCurrentUser(user){ localStorage.setItem('nile_current_user', JSON.stringify(user)); }
+            function clearCurrentUser(){ localStorage.removeItem('nile_current_user'); }
+
+            // Modal utilities
+            const signinModal = document.getElementById('signinModal');
+            const signupModal = document.getElementById('signupModal');
+            function openModal(modal){ modal.style.display='flex'; document.body.style.overflow='hidden'; }
+            function closeModal(modal){ modal.style.display='none'; document.body.style.overflow='auto'; }
+
+            // Update header/auth UI depending on signed-in state
+            function updateAuthUI(){
+                const authContainer = document.querySelector('.header-content .auth-buttons');
+                const user = getCurrentUser();
+                if(user){
+                    authContainer.innerHTML = `
+                        <span style="color:var(--text-primary);font-weight:600;margin-right:12px;">Hello, ${escapeHtml(user.fullname || user.email)}</span>
+                        <a href="#" id="signoutBtn" class="btn btn-signin" style="padding:8px 14px;font-size:14px;">Sign Out</a>
+                    `;
+                    const signoutBtn = document.getElementById('signoutBtn');
+                    signoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); signOut(); });
+                } else {
+                    authContainer.innerHTML = `
+                        <a href="#" class="btn btn-signin" id="signinBtn"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+                        <a href="#" class="btn btn-signup" id="signupBtn"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    `;
+                    // rebind modal openers
+                    bindAuthButtons();
+                }
+                // Show or hide "Why Choose Nile" section based on auth state
+                const why = document.getElementById('whySection');
+                if(why) why.style.display = user ? '' : 'none';
+
+                // Show pre-login hero and image sections only when NOT signed in
+                const hero = document.querySelector('.hero');
+                const imageBg = document.querySelector('.image-background-section');
+                if(hero) hero.style.display = user ? 'none' : '';
+                if(imageBg) imageBg.style.display = user ? 'none' : '';
+            }
+
+            function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];}); }
+
+            function signOut(){ clearCurrentUser(); updateAuthUI(); alert('Signed out'); }
+
+            // Bind sign in / sign up buttons to open modals
+            function bindAuthButtons(){
+                const signinBtns = document.querySelectorAll('#signinBtn, #heroSigninBtn');
+                const signupBtns = document.querySelectorAll('#signupBtn, #heroSignupBtn, #imageSignupBtn');
+                signinBtns.forEach(btn=>btn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(signinModal); }));
+                signupBtns.forEach(btn=>btn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(signupModal); }));
+            }
+
+            // Close buttons
+            document.getElementById('closeSignin').addEventListener('click', ()=> closeModal(signinModal));
+            document.getElementById('closeSignup').addEventListener('click', ()=> closeModal(signupModal));
+
+            // Switch modal links
+            document.getElementById('switchToSignup').addEventListener('click', (e)=>{ e.preventDefault(); closeModal(signinModal); setTimeout(()=>openModal(signupModal), 200); });
+            document.getElementById('switchToSignin').addEventListener('click', (e)=>{ e.preventDefault(); closeModal(signupModal); setTimeout(()=>openModal(signinModal), 200); });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (e)=>{ if(e.target===signinModal) closeModal(signinModal); if(e.target===signupModal) closeModal(signupModal); });
+
+            // Form handling
+            document.getElementById('signupForm').addEventListener('submit', (e)=>{
+                e.preventDefault();
+                const fullname = document.getElementById('fullname').value.trim();
+                const email = document.getElementById('newEmail').value.trim().toLowerCase();
+                const password = document.getElementById('newPassword').value;
+                const confirm = document.getElementById('confirmPassword').value;
+                if(!email || !password){ alert('Please provide email and password'); return; }
+                if(email === ADMIN_EMAIL){ alert('This email is reserved.'); return; }
+                if(password !== confirm){ alert('Passwords do not match'); return; }
+                const users = getUsers();
+                if(users.find(u=>u.email===email)){ alert('An account with this email already exists'); return; }
+                const user = { fullname, email, password };
+                users.push(user);
+                saveUsers(users);
+                setCurrentUser(user);
+                closeModal(signupModal);
+                updateAuthUI();
+                alert(`Welcome, ${fullname || email}!`);
+                e.target.reset();
+            });
+
+            document.getElementById('signinForm').addEventListener('submit', (e)=>{
+                e.preventDefault();
+                const email = document.getElementById('email').value.trim().toLowerCase();
+                const password = document.getElementById('password').value;
+                // Admin shortcut: if admin credentials, go to admin panel
+                if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
+                    const adminUser = { fullname: 'Admin', email: ADMIN_EMAIL };
+                    setCurrentUser(adminUser);
+                    // redirect to admin panel
+                    window.location.href = 'admin.html';
+                    return;
+                }
+                const users = getUsers();
+                const user = users.find(u=>u.email===email && u.password===password);
+                if(!user){ alert('Invalid email or password'); return; }
+                setCurrentUser(user);
+                closeModal(signinModal);
+                updateAuthUI();
+                alert(`Signed in as ${user.fullname || user.email}`);
+                e.target.reset();
+            });
+
+            // Forgot password (no OTP): show simple support message
+            document.getElementById('forgotPasswordLink').addEventListener('click', (e)=>{
+                e.preventDefault();
+                alert('Please contact support to reset your password.');
+            });
+
+            // Sync auth UI across tabs and update on DOM ready
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'nile_current_user' || e.key === 'nile_users') {
+                    try { updateAuthUI(); } catch (err) { /* ignore */ }
+                }
+            });
+
+            // Grid card hover + parallax
+            document.addEventListener('DOMContentLoaded', ()=>{
+                const gridCards = document.querySelectorAll('.grid-card');
+                gridCards.forEach(card=>{
+                    card.addEventListener('mouseenter', ()=> card.style.boxShadow = '0 15px 30px rgba(10, 102, 194, 0.25)');
+                    card.addEventListener('mouseleave', ()=> card.style.boxShadow = '');
+                });
+                const bgImage = document.querySelector('.background-image');
+                window.addEventListener('scroll', ()=>{ const scrolled = window.pageYOffset; bgImage.style.transform = `translate3d(0px, ${scrolled * 0.5}px, 0px)`; });
+
+                // Initialize auth UI
+                updateAuthUI();
+            });
+        })();
+    </script>
+</body>
+</html>
